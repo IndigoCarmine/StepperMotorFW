@@ -1,0 +1,10 @@
+../Core/Src/motor_control.c:20:5:get_dirction	8	static
+../Core/Src/motor_control.c:25:5:get_position	16	static
+../Core/Src/motor_control.c:30:6:set_speed	16	static
+../Core/Src/motor_control.c:37:6:set_direction	16	static
+../Core/Src/motor_control.c:43:6:activate	8	static
+../Core/Src/motor_control.c:46:6:diactivate	8	static
+../Core/Src/motor_control.c:51:6:move_async	24	static
+../Core/Src/motor_control.c:68:6:aysnc_callback	8	static
+../Core/Src/motor_control.c:72:6:limit_switch_callback	4	static
+../Core/Src/motor_control.c:76:6:stop	16	static
