@@ -10,19 +10,14 @@
 
 #include "stdint.h"
 
-enum MotorMode{
-	Speed,
-	Position,
-	FreePosition
-};
 
 
 
+#define BASE_ID_High 0x5
+#define BASE_ID (BASE_ID_High<<2)
 
-inline const int BASE_ID_High = 0x0;
-inline const int BASE_ID = BASE_ID_High<<2;
 
-inline const uint8_t mode = FreePosition;
+
 
 
 #endif /* INC_CONFIG_H_ */

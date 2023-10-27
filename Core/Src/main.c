@@ -26,6 +26,7 @@
 /* USER CODE BEGIN Includes */
 #include "led.h"
 #include "motor_control.h"
+#include "config.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,29 +60,31 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN 0 */
 void can_setup(uint16_t baseID){
 	CAN_FilterTypeDef filter;
-	filter.FilterIdHigh         = 0;                        // ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ID(ä¸Šï¿½?16ãƒ“ãƒƒ?????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½?)
-	filter.FilterIdLow          = baseID<<2;                        // ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ID(ä¸‹ï¿½?16ãƒ“ãƒƒ?????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½?)
-	filter.FilterMaskIdHigh     = 0;                        // ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ãƒžã‚¹ã‚¯(ä¸Šï¿½?16ãƒ“ãƒƒ?????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½?)
-	filter.FilterMaskIdLow      = 0xFF-2;                        // ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ãƒžã‚¹ã‚¯(ä¸‹ï¿½?16ãƒ“ãƒƒ?????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½?)
-	filter.FilterScale          = CAN_FILTERSCALE_32BIT;    // ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚¹ã‚±ãƒ¼ãƒ«
-	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;         // ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã«å‰²ã‚Šå½“ã¦ã‚‹FIFO
-	filter.FilterBank           = 0;                        // ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ãƒãƒ³ã‚¯No
-	filter.FilterMode           = CAN_FILTERMODE_IDMASK;    // ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ãƒ¢ãƒ¼?????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½?
-	filter.SlaveStartFilterBank = 14;                       // ã‚¹ãƒ¬ãƒ¼ãƒ–CANã®é–‹å§‹ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ãƒãƒ³ã‚¯No
-	filter.FilterActivation     = ENABLE;                   // ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ç„¡åŠ¹??????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½?????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½æœ‰åŠ¹
+	filter.FilterIdHigh         = 0;
+//	filter.FilterIdLow          = baseID;
+//	filter.FilterMaskIdHigh     = 0;
+//  filter.FilterMaskIdLow      = 0xFF-2;
+	filter.FilterIdLow          = 0;
+	filter.FilterMaskIdHigh     = 0;
+	filter.FilterMaskIdLow      = 0;
+    filter.FilterScale          = CAN_FILTERSCALE_32BIT;
+	filter.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+	filter.FilterBank           = 0;
+	filter.FilterMode           = CAN_FILTERMODE_IDMASK;
+	filter.SlaveStartFilterBank = 14;
+	filter.FilterActivation     = ENABLE;
 
-	  if (HAL_CAN_ConfigFilter(&hcan, &filter) != HAL_OK)
-	  {
-	    Error_Handler();
-	  }
+  if (HAL_CAN_ConfigFilter(&hcan, &filter) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
-	  HAL_CAN_Start(&hcan);
+	HAL_CAN_Start(&hcan);
 
-	  // å‰²ã‚Šè¾¼ã¿å‡¦????¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½?ã®é–‹ï¿½?
-	  if (HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
-	  {
-	    Error_Handler();
-	  }
+  if (HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 /* USER CODE END 0 */
 
@@ -98,7 +101,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+r   HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -117,10 +120,13 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  can_setup(0);
+  can_setup(BASE_ID);
 
+//  HAL_GPIO_WritePin(MODE0_GPIO_Port, MODE0_Pin, GPIO_PIN_SET);
+//  HAL_GPIO_WritePin(MODE1_GPIO_Port, MODE1_Pin, GPIO_PIN_SET);
+//  HAL_GPIO_WritePin(MODE2_GPIO_Port, MODE2_Pin, GPIO_PIN_SET);
   set_speed(100);
-  move_async(100000);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -129,11 +135,6 @@ int main(void)
   {
 	  led_on(state1);
 	  if(htim1.ChannelState[0]==HAL_TIM_CHANNEL_STATE_BUSY)led_on(motor);
-	  switch(deviceState){
-	  default:
-		  break;
-	  }
-
 	  switch(hcan.State){
 	  default:
 		  break;

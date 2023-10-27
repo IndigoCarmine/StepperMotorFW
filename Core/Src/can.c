@@ -21,7 +21,9 @@
 #include "can.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "motor_control.h"
+#include "config.h"
+#include <string.h>
 /* USER CODE END 0 */
 
 CAN_HandleTypeDef hcan;
@@ -121,5 +123,90 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
 }
 
 /* USER CODE BEGIN 1 */
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
+    CAN_RxHeaderTypeDef RxHeader;
+    uint8_t RxData[8];
+    if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData) == HAL_OK)
+    {
+        uint32_t id = (RxHeader.IDE==CAN_ID_STD)?RxHeader.StdId:RxHeader.ExtId;
 
+        switch (id)
+        {
+        case 0x00:
+        {
+        	//EMS
+        	stop();
+        	break;
+        }
+        case 0x01:
+        {
+        	//inter TODO
+        	break;
+        }
+        case BASE_ID:
+        {
+        	//target
+        	float a =0;
+        	memcpy(&a,RxData,4);
+
+        	switch(motorMode){
+        	case Stop:
+        		break;
+        	case SimpleMove:
+        	{
+        		move_sync(a);
+        		break;
+        	}
+        	case Position:
+        	{
+            	move_async(a);
+            	break;
+        	}
+        	default:
+        		break;
+
+
+        	}
+        	break;
+        }
+        case BASE_ID + 1:
+		{
+			//mode
+			switch(RxData[0]){
+			case 0:
+			{
+				//
+				motorMode = Stop;
+
+				break;
+			}
+			case 1:
+			{
+				motorMode = SimpleMove;
+				break;
+			}
+			}
+			break;
+		}
+        case BASE_ID + 2:
+		{
+			//settings
+			switch(RxData[0]){
+			case 0:
+			{
+				int speed_inv = 0;
+				memcpy(&speed_inv,RxData + 1, 4);
+				set_speed(speed_inv);
+				break;
+			}
+			default:
+				break;
+			}
+		}
+
+        default:
+            break;
+        }
+    }
+}
 /* USER CODE END 1 */

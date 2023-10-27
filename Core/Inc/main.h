@@ -41,7 +41,6 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-extern __IO int deviceState;
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -59,8 +58,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define MODE0_Pin GPIO_PIN_0
 #define MODE0_GPIO_Port GPIOA
-#define MDOE1_Pin GPIO_PIN_1
-#define MDOE1_GPIO_Port GPIOA
+#define MODE1_Pin GPIO_PIN_1
+#define MODE1_GPIO_Port GPIOA
 #define MODE2_Pin GPIO_PIN_2
 #define MODE2_GPIO_Port GPIOA
 #define LIMIT_A_Pin GPIO_PIN_0
