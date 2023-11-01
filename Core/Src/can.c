@@ -23,6 +23,7 @@
 /* USER CODE BEGIN 0 */
 #include "motor_control.h"
 #include "config.h"
+#include "led.h"
 #include <string.h>
 /* USER CODE END 0 */
 
@@ -126,6 +127,7 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
     CAN_RxHeaderTypeDef RxHeader;
     uint8_t RxData[8];
+    led_on(can);
     if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData) == HAL_OK)
     {
         uint32_t id = (RxHeader.IDE==CAN_ID_STD)?RxHeader.StdId:RxHeader.ExtId;
@@ -177,8 +179,9 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 			{
 				//
 				motorMode = Stop;
+        stop();
 
-				break;
+        break;
 			}
 			case 1:
 			{

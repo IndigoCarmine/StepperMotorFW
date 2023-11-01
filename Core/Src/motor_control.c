@@ -107,6 +107,7 @@ void stop(){
 	{
 		break;
 	}
+
 	case FreePosition:
 	{
 		HAL_GPIO_WritePin(ENABLE_GPIO_Port,ENABLE_Pin, GPIO_PIN_RESET);
@@ -118,8 +119,10 @@ void stop(){
 		HAL_GPIO_WritePin(ENABLE_GPIO_Port,ENABLE_Pin, GPIO_PIN_RESET);
 		break;
 	}
+	case Stop:
+		break;
 
-		default:
+	default:
 		Error_Handler();
 		break;
 	}

@@ -10,4 +10,4 @@ motor_control.c:60:6:move_async	3
 motor_control.c:77:6:move_sync	3
 motor_control.c:91:6:aysnc_callback	2
 motor_control.c:96:6:limit_switch_callback	1
-motor_control.c:100:6:stop	5
+motor_control.c:100:6:stop	4

@@ -101,7 +101,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-r   HAL_Init();
+   HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -135,10 +135,6 @@ r   HAL_Init();
   {
 	  led_on(state1);
 	  if(htim1.ChannelState[0]==HAL_TIM_CHANNEL_STATE_BUSY)led_on(motor);
-	  switch(hcan.State){
-	  default:
-		  break;
-	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
